@@ -1,0 +1,99 @@
+{
+  "type" : "jdbc",
+  "jdbc" : {
+    "cluster" : "my-application",
+    "index_settings" : {
+      "analysis" : {
+        "analyzer" : {
+          "ik" : {
+            "tokenizer" : "ik"
+          }
+        }
+      }
+    },
+    "index" : "onelink",
+    "type" : "goods",
+    "url" : "jdbc:mysql://192.168.1.249:3306/onelink",
+    "sql" : [ {
+      "statement" : "SELECT g.goods_id as _id,g.store_id,g.goods_name,g.cate_id,g.if_show,g.add_time,g.is_hot,g.shipping_id,g.is_customizing,g.start_stock,g.price,g.sort_order,s.state from wl_goods g LEFT JOIN wl_store s on g.store_id=s.store_id where (select from_unixtime(g.last_update)) > ?",
+      "parameter" : [ "$metrics.lastexecutionstart" ]
+    } ],
+    "useSSL" : "false",
+    "schedule" : "0/10 0-59 0-23 ? * *",
+    "password" : "s3cretR00t",
+    "elasticsearch" : {
+      "host" : "0.0.0.0",
+      "cluster" : "my-application",
+      "port" : "9300"
+    },
+    "statefile" : "statefile-tag.json",
+    "metrics" : {
+      "lastexecutionstart" : "2018-01-15T15:28:20.035Z",
+      "lastexecutionend" : "2018-01-15T15:28:20.166Z",
+      "counter" : "2860"
+    },
+    "type_mapping" : {
+      "goods" : {
+        "properties" : {
+          "g" : {
+            "store_id" : {
+              "type" : "integer",
+              "index" : "not_analyzed"
+            },
+            "goods_name" : {
+              "type" : "string",
+              "analyzer" : "ik_smart"
+            },
+            "if_show" : {
+              "type" : "integer",
+              "index" : "not_analyzed"
+            },
+            "shopping_id" : {
+              "type" : "integer",
+              "index" : "not_analyzed"
+            },
+            "is_hot" : {
+              "type" : "integer",
+              "index" : "not_analyzed"
+            },
+            "price" : {
+              "type" : "decimal",
+              "index" : "not_analyzed"
+            },
+            "is_customizing" : {
+              "type" : "integer",
+              "index" : "not_analyzed"
+            },
+            "start_stock" : {
+              "type" : "integer",
+              "index" : "not_analyzed"
+            },
+            "goods_id" : {
+              "type" : "integer",
+              "index" : "not_analyzed"
+            },
+            "cate_id" : {
+              "type" : "integer",
+              "index" : "not_analyzed"
+            },
+            "add_time" : {
+              "type" : "integer",
+              "index" : "not_analyzed"
+            },
+            "sort_order" : {
+              "type" : "integer",
+              "index" : "not_analyzed"
+            }
+          },
+          "s" : {
+            "state" : {
+              "type" : "integer",
+              "index" : "not_analyzed"
+            }
+          }
+        }
+      }
+    },
+    "user" : "root"
+  }
+}
